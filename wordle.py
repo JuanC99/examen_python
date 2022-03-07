@@ -80,37 +80,69 @@ def choose_secret_advanced(filename):
       selected: Lista de 15 palabras aleatorias no repetidas que tienen 5 letras y no tienen acentos
       secret: Palabra elegida aleatoriamente de la lista de 15 seleccionadas transformada a mayúsculas
     """
+    letras_excluidas = ("á", "é", "í", "ó", "ú")    
     f = open(filename, mode="rt", encoding="utf-8")
     linea = f.readline()
     palabras=[]
+    excluir_palabra = False
     while linea != "" :
+      #Eliminas los carcateres de salto de linea
       linea = linea.replace('\n',"")
       if(len(linea)==5):
-        palabras.append(linea)
-      
+        for c in linea:
+          #Comprobamos que no tenga letras excluidas con ascentos
+          if(c in letras_excluidas):
+            excluir_palabra= True
+        
+        if(excluir_palabra==False):
+          palabras.append(linea)
+        excluir_palabra = False
       linea = f.readline()
     f.close()
-    print(palabras, print(len(palabras)))
-    secret = random.choice(palabras)
+    palabras_filtradas= []
+    #Filtramos las 15 palabras aleatorias
+    while len(palabras_filtradas) < 15:
+      secret = random.choice(palabras)
+      palabras_filtradas.append(secret)
+      palabras.remove(secret)
+
+    secret = random.choice(palabras_filtradas)
     return secret
 
  
-def check_valid_word():
+def check_valid_word(selected):
     """Dada una lista de palabras, esta función pregunta al usuario que introduzca una palabra hasta que introduzca una que esté en la lista. Esta palabra es la que devolverá la función.
     Args:
       selected: Lista de palabras.
     Returns:
       word: Palabra introducida por el usuario que está en la lista.
     """
+    palabra_encontrada= False
+    while palabra_encontrada == False:
+      word = input("Introduce una palabra para comprabar si pertenece a la lista: ")
+      if(word in selected):
+        palabra_encontrada=True
+      else:
+        print("Lo siento! Vuelve a intentarlo!")
+
+
+
+
 
 if __name__ == "__main__":
     file = "palabras_extended.txt"
     secret=choose_secret_advanced(file)
-    #41-> A | 54 ->Z
-    i = 0
-    while i < 91:
-      print(chr(i), i)
-      i=i+1
+
+    print("Palabra a adivinar: "+secret)#Debug: esto es para que sepas la palabra que debes adivinar
+    for repeticiones in range(0,6):
+        word = input("Introduce una nueva palabra: ")
+        same_position, same_letter = compare_words(word,secret)
+        resultado=print_word(word,same_position, same_letter)
+        print(resultado)
+        if word.lower() == secret.lower():
+            print("HAS GANADO!!")
+            exit()
+    print("LO SIENTO, NO LA HAS ADIVINIDADO. LA PALABRA ERA "+secret)   
 
  
     
