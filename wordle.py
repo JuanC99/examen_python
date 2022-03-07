@@ -123,10 +123,11 @@ def check_valid_word(selected):
       if(word in selected):
         palabra_encontrada=True
       else:
-        print("Lo siento! Vuelve a intentarlo!")
+        print("Introduzca una palabra valida!")
+    return word
 
 
-
+valid_words = ["tozar","risco","piocha","lomaje","merca","almea","borrar","tamtan","suma"]
 
 
 if __name__ == "__main__":
@@ -135,7 +136,8 @@ if __name__ == "__main__":
 
     print("Palabra a adivinar: "+secret)#Debug: esto es para que sepas la palabra que debes adivinar
     for repeticiones in range(0,6):
-        word = input("Introduce una nueva palabra: ")
+        #word = input("Introduce una nueva palabra: ")
+        word = check_valid_word(valid_words)
         same_position, same_letter = compare_words(word,secret)
         resultado=print_word(word,same_position, same_letter)
         print(resultado)

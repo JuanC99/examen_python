@@ -10,6 +10,7 @@ def encontrar_menores(diccionario,letra):
     """
     for clave in diccionario:
         for palabra in diccionario[clave]:
+            print(palabra)
             if palabra[0] < letra:
                 resultado=[]
                 resultado.append(palabra)
