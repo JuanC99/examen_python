@@ -10,6 +10,7 @@ def choose_secret(filename):
     linea = f.readline()
     palabras=[]
     while linea != "" :
+      linea = linea.replace('\n',"")
       palabras.append(linea)
       linea = f.readline()
     f.close()
@@ -25,11 +26,15 @@ def compare_words(word, secret):
       same_position: Lista de posiciones de word cuyas letras coinciden en la misma posición en secret. En el caso anterior: [0]
       same_letter: Lista de posiciones de word cuyas letras están en secret pero en posiciones distintas. En el caso anterior: [1,2]
     """
+    word = word.upper()
+    secret = secret.upper()
+
     same_position = []
     same_letter = []
     contador_word = 0
     contador_secret = 0
     letra_encontrada = False
+
     for c in word:
 
       for c2 in secret:
@@ -67,7 +72,7 @@ def print_word(word, same_letter_position,same_letter):
     return transformed
 
     
-def choose_secret_advanced():
+def choose_secret_advanced(filename):
     """Dado un nombre de fichero, esta función filtra solo las palabras de 5 letras que no tienen acentos (á,é,í,ó,ú). De estas palabras, la función devuelve una lista de 15 aleatorias no repetidas y una de estas 15, se selecciona aleatoriamente como palabra secret.
     Args:
       filename: El nombre del fichero. Ej. "palabras_extended.txt"
@@ -75,6 +80,20 @@ def choose_secret_advanced():
       selected: Lista de 15 palabras aleatorias no repetidas que tienen 5 letras y no tienen acentos
       secret: Palabra elegida aleatoriamente de la lista de 15 seleccionadas transformada a mayúsculas
     """
+    f = open(filename, mode="rt", encoding="utf-8")
+    linea = f.readline()
+    palabras=[]
+    while linea != "" :
+      linea = linea.replace('\n',"")
+      if(len(linea)==5):
+        palabras.append(linea)
+      
+      linea = f.readline()
+    f.close()
+    print(palabras, print(len(palabras)))
+    secret = random.choice(palabras)
+    return secret
+
  
 def check_valid_word():
     """Dada una lista de palabras, esta función pregunta al usuario que introduzca una palabra hasta que introduzca una que esté en la lista. Esta palabra es la que devolverá la función.
@@ -85,10 +104,14 @@ def check_valid_word():
     """
 
 if __name__ == "__main__":
-    file = "palabras_reduced.txt"
-    secret=choose_secret(file)
-    lista1 , lista2 = compare_words("CAMPO", "CREMA")
-    palabra = print_word("CAMPO", lista1, lista2)
-    print(palabra)
+    file = "palabras_extended.txt"
+    secret=choose_secret_advanced(file)
+    #41-> A | 54 ->Z
+    i = 0
+    while i < 91:
+      print(chr(i), i)
+      i=i+1
+
+ 
     
 
